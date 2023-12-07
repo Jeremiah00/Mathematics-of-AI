@@ -11,7 +11,7 @@ public class MoveToGoal : MonoBehaviour
 
     void Start()
     {
-
+        this.transform.LookAt(goal.position);
 
     }
 
@@ -20,7 +20,7 @@ public class MoveToGoal : MonoBehaviour
         Vector3 direction = goal.position - this.transform.position;
         if(direction.magnitude > accuracy)
         {
-            this.transform.Translate(direction * speed * Time.deltaTime);
+            this.transform.Translate(direction * speed * Time.deltaTime, Space.World);
         }
         
     }
