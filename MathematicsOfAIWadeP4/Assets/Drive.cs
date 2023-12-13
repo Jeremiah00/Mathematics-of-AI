@@ -10,6 +10,9 @@ public class Drive : MonoBehaviour {
     // Public GameObject to store the fuel in
     public GameObject fuel;
 
+    // Bool to turn AutoPilot On/Off
+    bool autoPilot = false;
+
     void Start() {
 
     }
@@ -43,10 +46,13 @@ public class Drive : MonoBehaviour {
             clockwise = -1;
 
         // Use Unity to work out the angle for you
-        float unityAngle = Vector3.SignedAngle(tF, fD, this.transform.forward);
+        // float unityAngle = Vector3.SignedAngle(tF, fD, this.transform.forward);
 
         // Get the tank to face the fuel
-        this.transform.Rotate(0.0f, 0.0f, unityAngle);
+        // this.transform.Rotate(0.0f, 0.0f, unityAngle);
+
+        // Use our rotation
+        this.transform.Rotate(0.0f, 0.0f, (angle * clockwise * Mathf.Rad2Deg) * 0.02f);
     }
 
     // Calculate the Cross Product
@@ -61,7 +67,7 @@ public class Drive : MonoBehaviour {
     }
 
     // Calculate the distance from the tank to the fuel
-    void CalculateDistance() {
+    float CalculateDistance() {
 
         // Tank position
         Vector3 tP = this.transform.position;
@@ -79,6 +85,18 @@ public class Drive : MonoBehaviour {
         // Print out the two results to the console
         Debug.Log("Distance: " + distance);
         Debug.Log("Unity Distance: " + unityDistance);
+
+        // Return the calculated distance
+        return distance;
+    }
+
+    float autoSpeed = 0.1f;
+    void AutoPilot() {
+
+        // Face the fuel tank
+        CalculateAngle();
+        // Move the tank in it's forward direction
+        this.transform.Translate(this.transform.up * autoSpeed, Space.World);
     }
 
     void Update() {
@@ -105,6 +123,23 @@ public class Drive : MonoBehaviour {
             CalculateDistance();
             // Call CalculateAngle method
             CalculateAngle();
+        }
+
+        // Check if the T key has been pressed
+        if (Input.GetKeyDown(KeyCode.T)) {
+
+            // Flip the value of autoPilot
+            autoPilot = !autoPilot;
+        }
+
+        // Check if autoPilot is enabled
+        if (autoPilot) {
+
+            // If yes and distance is greater than 5 then execute AutoPilot method
+            if (CalculateDistance() > 5.0f) {
+
+                AutoPilot();
+            }
         }
 
     }
