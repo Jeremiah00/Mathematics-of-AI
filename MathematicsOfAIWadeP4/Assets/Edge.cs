@@ -6,11 +6,11 @@ using UnityEngine;
 public class Edge 
 {
     public Node startNade;
-    public Node endNade;
+    public Node endNode;
 
     public Edge(Node from, Node to)
     {
         startNade = from;  
-        endNade = to;
+        endNode = to;
     }
 }
