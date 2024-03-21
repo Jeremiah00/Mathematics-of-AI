@@ -39,58 +39,72 @@ public class Graph
         return null;
     }
 
-    public bool Astar(GameObject startId, GameObject endId)
+    public bool Astar(GameObject startID, GameObject endID)
     {
-        Node start = FindNode(startId);
-        Node end = FindNode(endId);
-        if(start != null && end != null)
-        {
+
+        if (startID == endID) {
+
+            pathList.Clear();
             return false;
         }
 
+        Node start = FindNode(startID);
+        Node end = FindNode(endID);
+
+        if (start == null || end == null) return false;
+
         List<Node> open = new List<Node>();
-        List <Node> close = new List<Node>();
-        float tentative_g_score = 0;
+        List<Node> closed = new List<Node>();
+
+        float tentative_g_score = 0.0f;
         bool tentative_is_better;
 
-        start.g = 0;
+        start.g = 0.0f;
         start.h = distance(start, end);
         start.f = start.h;
 
         open.Add(start);
-        while(open.Count > 0)
+
+        while (open.Count > 0)
         {
+
             int i = lowestF(open);
             Node thisNode = open[i];
-            if(thisNode.getId() == endId) 
+            if (thisNode.getId() == endID)
             {
+
                 ReconstructPath(start, end);
                 return true;
             }
+
             open.RemoveAt(i);
-            close.Add(thisNode);
+            closed.Add(thisNode);
             Node neighbour;
-            foreach(Edge e in thisNode.edgeList)
+            foreach (Edge e in thisNode.edgeList)
             {
+
                 neighbour = e.endNode;
-                if (close.IndexOf(neighbour) > -1)
-                    continue;
+
+                if (closed.IndexOf(neighbour) > -1) continue;
+
                 tentative_g_score = thisNode.g + distance(thisNode, neighbour);
-                if(open.IndexOf(neighbour) == -1)
+                if (open.IndexOf(neighbour) == -1)
                 {
+
                     open.Add(neighbour);
                     tentative_is_better = true;
                 }
-                else if(tentative_g_score < neighbour.g)
+                else if (tentative_g_score < neighbour.g)
                 {
+
                     tentative_is_better = true;
                 }
                 else
-                {
                     tentative_is_better = false;
-                }
+
                 if (tentative_is_better)
                 {
+
                     neighbour.cameFrom = thisNode;
                     neighbour.g = tentative_g_score;
                     neighbour.h = distance(thisNode, end);
@@ -99,9 +113,10 @@ public class Graph
             }
         }
         return false;
+
     }
 
-    public void ReconstructPath(Node startId, Node endId)
+        public void ReconstructPath(Node startId, Node endId)
     {
         pathList.Clear();
         pathList.Add(startId);

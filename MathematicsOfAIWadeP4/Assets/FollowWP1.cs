@@ -26,7 +26,7 @@ public class FollowWP1 : MonoBehaviour
     }
     public void GoToHeli()
     {
-        g.Astar(currentNode, wps[0]);
+        g.Astar(currentNode, wps[8]);
         currentWP = 0;
 
     }
@@ -44,7 +44,7 @@ public class FollowWP1 : MonoBehaviour
         {
             return;
         }
-        if (Vector3.Distance(g.pathList[currentWP].getId().transform.position, this.transform.position) < accuracy);
+        if (Vector3.Distance(g.pathList[currentWP].getId().transform.position, this.transform.position) < accuracy)
         {
             currentNode = g.pathList[currentWP].getId();
             currentWP++;
@@ -57,7 +57,7 @@ public class FollowWP1 : MonoBehaviour
 
             Vector3 direction = lookAtGoal - this.transform.position;
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime);
-            this.transform.Translate(0,0,speed * Time.deltaTime);
+            this.transform.Translate(0,0, speed * Time.deltaTime);
         }
         
     }
