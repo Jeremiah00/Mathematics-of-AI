@@ -5,7 +5,7 @@ using UnityEngine;
 public class FollowWP1 : MonoBehaviour
 {
     Transform goal;
-    float speed = 5.0f;
+    float speed = 10.0f;
     float accuracy = 1.0f;
     float rotSpeed = 2.0f;
 
